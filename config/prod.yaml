@@ -1,0 +1,30 @@
+# Production Configuration
+
+api:
+  host: 0.0.0.0
+  port: 8000
+  debug: false
+
+database:
+  url: ${DATABASE_URL}
+  pool_size: 20
+
+models:
+  bert:
+    path: ${BERT_MODEL_PATH}
+    cache_dir: /app/cache/models
+  embedding_dim: 768
+
+retrieval:
+  top_k: 5
+  threshold: 0.7
+  index_type: L2
+
+logging:
+  level: INFO
+  file: /app/logs/app.log
+
+security:
+  secret_key: ${SECRET_KEY}
+  allowed_origins: ${ALLOWED_ORIGINS}
+

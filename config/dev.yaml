@@ -1,0 +1,26 @@
+# Development Configuration
+
+api:
+  host: localhost
+  port: 8000
+  debug: true
+
+database:
+  url: postgresql://localhost:5432/ragdb_dev
+  pool_size: 5
+
+models:
+  bert:
+    path: ./models/bert-base-uncased
+    cache_dir: ./cache/models
+  embedding_dim: 768
+
+retrieval:
+  top_k: 5
+  threshold: 0.7
+  index_type: L2
+
+logging:
+  level: DEBUG
+  file: ./data/logs/dev.log
+
