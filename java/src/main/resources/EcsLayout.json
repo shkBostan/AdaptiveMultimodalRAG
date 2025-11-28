@@ -1,0 +1,51 @@
+{
+  "@timestamp": {
+    "$resolver": "timestamp"
+  },
+  "log.level": {
+    "$resolver": "level",
+    "field": "name"
+  },
+  "message": {
+    "$resolver": "message"
+  },
+  "logger.name": {
+    "$resolver": "logger",
+    "field": "name"
+  },
+  "thread.name": {
+    "$resolver": "thread",
+    "field": "name"
+  },
+  "correlationId": {
+    "$resolver": "mdc",
+    "key": "correlationId",
+    "field": "correlationId"
+  },
+  "userId": {
+    "$resolver": "mdc",
+    "key": "userId",
+    "field": "userId"
+  },
+  "requestId": {
+    "$resolver": "mdc",
+    "key": "requestId",
+    "field": "requestId"
+  },
+  "exception": {
+    "$resolver": "exception",
+    "field": "exception"
+  },
+  "stack_trace": {
+    "$resolver": "exception",
+    "field": "stackTrace",
+    "stackTrace": {
+      "stringified": true
+    }
+  },
+  "source": {
+    "$resolver": "source",
+    "field": "source"
+  }
+}
+

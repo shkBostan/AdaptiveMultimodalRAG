@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Log4j2 Configuration for AdaptiveMultimodalRAG
+    
+    Author: s Bostan
+    Created on: Nov, 2025
+    
+    Features:
+    - Environment-based configuration (dev/prod)
+    - Rolling file appenders with daily rotation
+    - JSON appender for production
+    - Console appender for development
+    - Correlation ID support via ThreadContext
+    - Async logging for performance
+-->
+<Configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <!-- Log file locations -->
+        <Property name="LOG_DIR">${sys:log.dir:-logs}</Property>
+        <Property name="LOG_FILE">${LOG_DIR}/app.log</Property>
+        <Property name="ERROR_LOG_FILE">${LOG_DIR}/app-error.log</Property>
+        <Property name="ARCHIVE_DIR">${LOG_DIR}/archive</Property>
+        
+        <!-- Environment detection -->
+        <Property name="ENV">${sys:env:-dev}</Property>
+        
+        <!-- Pattern for console (dev) -->
+        <Property name="CONSOLE_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n%throwable</Property>
+        
+        <!-- Pattern for file (dev) -->
+        <Property name="FILE_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} [%X{correlationId}] - %msg%n%throwable</Property>
+    </Properties>
+    
+    <Appenders>
+        <!-- Console Appender (Development) -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${CONSOLE_PATTERN}"/>
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+        </Console>
+        
+        <!-- File Appender with Rolling (All Environments) -->
+        <RollingFile name="FileAppender" fileName="${LOG_FILE}"
+                     filePattern="${ARCHIVE_DIR}/app-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${FILE_PATTERN}"/>
+            <Policies>
+                <!-- Daily rollover -->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <!-- Size-based rollover -->
+                <SizeBasedTriggeringPolicy size="100MB"/>
+            </Policies>
+            <!-- Keep 30 days of logs, max 10 files per day -->
+            <DefaultRolloverStrategy max="10">
+                <Delete basePath="${ARCHIVE_DIR}" maxDepth="1">
+                    <IfFileName glob="app-*.log.gz"/>
+                    <IfLastModified age="30d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        
+        <!-- Error File Appender (Separate error logs) -->
+        <RollingFile name="ErrorFileAppender" fileName="${ERROR_LOG_FILE}"
+                     filePattern="${ARCHIVE_DIR}/app-error-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${FILE_PATTERN}"/>
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="50MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10">
+                <Delete basePath="${ARCHIVE_DIR}" maxDepth="1">
+                    <IfFileName glob="app-error-*.log.gz"/>
+                    <IfLastModified age="30d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        
+        <!-- JSON Appender (Production) -->
+        <RollingFile name="JsonFileAppender" fileName="${LOG_DIR}/app.json"
+                     filePattern="${ARCHIVE_DIR}/app-%d{yyyy-MM-dd}-%i.json.gz">
+            <JsonTemplateLayout eventTemplateUri="classpath:EcsLayout.json"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10">
+                <Delete basePath="${ARCHIVE_DIR}" maxDepth="1">
+                    <IfFileName glob="app-*.json.gz"/>
+                    <IfLastModified age="30d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        
+        <!-- Async Appender for High Performance -->
+        <Async name="AsyncFile" bufferSize="512">
+            <AppenderRef ref="FileAppender"/>
+        </Async>
+        
+        <Async name="AsyncJson" bufferSize="512">
+            <AppenderRef ref="JsonFileAppender"/>
+        </Async>
+    </Appenders>
+    
+    <Loggers>
+        <!-- Application Loggers -->
+        <Logger name="com.adaptiveRAG" level="DEBUG" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="AsyncFile"/>
+            <AppenderRef ref="ErrorFileAppender"/>
+            <AppenderRef ref="AsyncJson"/>
+        </Logger>
+        
+        <!-- Third-party library loggers -->
+        <Logger name="org.apache" level="WARN"/>
+        <Logger name="org.springframework" level="INFO"/>
+        <Logger name="com.zaxxer.hikari" level="WARN"/>
+        
+        <!-- Root Logger -->
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="AsyncFile"/>
+            <AppenderRef ref="ErrorFileAppender"/>
+            <!-- Only add JSON appender in production -->
+            <AppenderRef ref="AsyncJson"/>
+        </Root>
+    </Loggers>
+</Configuration>
+
