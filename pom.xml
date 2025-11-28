@@ -48,25 +48,6 @@
             <version>2.21.1</version>
         </dependency>
         
-        <!-- Exclude Spring Boot Default Logging (if using Spring Boot) -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        
-        <!-- Spring Boot Log4j2 Starter (if using Spring Boot) -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-log4j2</artifactId>
-            <version>3.1.5</version>
-        </dependency>
-        
         <!-- Add your Java dependencies here -->
         <dependency>
             <groupId>junit</groupId>
