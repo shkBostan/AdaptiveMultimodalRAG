@@ -101,3 +101,8 @@ docs/pythonToturialFile.md
 docs/javaToturialFile.md
 docs/uiToturialFile.md
 
+# DocumentLoader guidance and documentation
+data/DocumentLoader_Testing_Guide.md
+data/test_document_loader.py
+data/QUICK_REFERENCE.md
+
