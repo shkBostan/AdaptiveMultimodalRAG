@@ -96,3 +96,8 @@ dist/
 build/
 out/
 
+# Tutorial documentation files
+docs/pythonToturialFile.md
+docs/javaToturialFile.md
+docs/uiToturialFile.md
+
