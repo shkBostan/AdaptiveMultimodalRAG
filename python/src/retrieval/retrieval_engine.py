@@ -14,21 +14,9 @@ from typing import List, Dict, Optional, Tuple, Union, Callable
 import numpy as np
 import faiss
 
-# Add project root to path for data imports
-project_root = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(project_root))
-
-from retrieval.index_builder import IndexBuilder, IndexType, DistanceMetric
-from utils.logger import get_logger
-
-# Import Document type (handle import gracefully for backward compatibility)
-try:
-    from data.document_loader import Document
-    DOCUMENT_AVAILABLE = True
-except ImportError:
-    DOCUMENT_AVAILABLE = False
-    # Create a placeholder type for type hints
-    Document = Dict  # type: ignore
+from .index_builder import IndexBuilder, IndexType, DistanceMetric
+from ..logging import get_logger
+from .document_loader import Document
 
 
 class RetrievalEngine:
@@ -88,10 +76,7 @@ class RetrievalEngine:
             )
         
         # Document storage (for new mode)
-        if DOCUMENT_AVAILABLE:
-            self._document_objects: List[Document] = []
-        else:
-            self._document_objects: List[Dict] = []  # type: ignore
+        self._document_objects: List[Document] = []
         
         # Logger
         self.logger = get_logger(__name__)
@@ -109,11 +94,6 @@ class RetrievalEngine:
         Raises:
             ImportError: If Document class is not available
         """
-        if not DOCUMENT_AVAILABLE:
-            raise ImportError(
-                "Document class not available. Install data.document_loader module."
-            )
-        
         self.logger.info(
             f"Loading {len(documents)} documents",
             extra={"num_documents": len(documents)}
@@ -396,7 +376,7 @@ class RetrievalEngine:
         )
         
         # Build results
-        if return_documents and self._document_objects and DOCUMENT_AVAILABLE:
+        if return_documents and self._document_objects:
             # Return Document objects
             results = []
             for i, (score, idx) in enumerate(zip(scores, indices)):
@@ -404,7 +384,7 @@ class RetrievalEngine:
                     doc = self._document_objects[int(idx)]
                     # Create a copy-like result with score
                     # Import Document here to ensure it's available
-                    from data.document_loader import Document as DocClass
+                    from .document_loader import Document as DocClass
                     result_doc = DocClass(
                         id=doc.id,
                         content=doc.content,
@@ -420,7 +400,7 @@ class RetrievalEngine:
             results = []
             if self.documents:
                 doc_dicts = self.documents
-            elif self._document_objects and DOCUMENT_AVAILABLE:
+            elif self._document_objects:
                 doc_dicts = [doc.to_dict() for doc in self._document_objects]
             else:
                 doc_dicts = []

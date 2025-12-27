@@ -16,20 +16,13 @@ from typing import List, Dict, Optional, Union, Any
 from datetime import datetime
 import numpy as np
 
-# Add project root to path for imports
-project_root = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(project_root))
+# Add python directory to path
+python_dir = Path(__file__).parent.parent
+sys.path.insert(0, str(python_dir))
 
-from retrieval.index_builder import IndexBuilder
-from utils.logger import get_logger
-
-# Import Document type (handle import gracefully)
-try:
-    from data.document_loader import Document
-    DOCUMENT_AVAILABLE = True
-except ImportError:
-    DOCUMENT_AVAILABLE = False
-    Document = Dict  # type: ignore
+from src.retrieval.index_builder import IndexBuilder
+from src.retrieval.document_loader import Document
+from src.logging import get_logger
 
 
 # Version constants
@@ -144,7 +137,7 @@ class PersistenceManager:
         # Convert documents to serializable format
         documents_data = []
         for doc in documents:
-            if DOCUMENT_AVAILABLE and hasattr(doc, 'to_dict'):
+            if hasattr(doc, 'to_dict'):
                 doc_dict = doc.to_dict()
             elif isinstance(doc, dict):
                 doc_dict = doc.copy()
@@ -243,8 +236,7 @@ class PersistenceManager:
         
         # Convert to Document objects
         documents = []
-        if DOCUMENT_AVAILABLE:
-            from data.document_loader import Document as DocClass
+        from src.retrieval.document_loader import Document as DocClass
             
             for doc_dict in documents_data:
                 try:
@@ -730,7 +722,7 @@ if __name__ == "__main__":
     # Example 1: Save and load documents
     print("Example 1: Document persistence")
     try:
-        from data.document_loader import DocumentLoader, Document
+        from src.retrieval.document_loader import DocumentLoader, Document
         
         manager = PersistenceManager(default_storage_dir="storage")
         loader = DocumentLoader()
@@ -806,8 +798,8 @@ if __name__ == "__main__":
     # Example 4: Complete state save/load
     print("Example 4: Complete state persistence")
     try:
-        from data.document_loader import DocumentLoader
-        from retrieval.index_builder import IndexBuilder
+        from src.retrieval import DocumentLoader
+        from src.retrieval.index_builder import IndexBuilder
         
         manager = PersistenceManager()
         

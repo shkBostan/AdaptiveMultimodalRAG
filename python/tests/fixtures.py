@@ -103,7 +103,7 @@ def mock_embedding_model():
 def sample_documents():
     """Create sample Document objects."""
     try:
-        from data.document_loader import Document
+        from src.retrieval.document_loader import Document
         return [
             Document(id="1", content="First document", metadata={"source": "doc1.txt"}),
             Document(id="2", content="Second document", metadata={"source": "doc2.txt"}),

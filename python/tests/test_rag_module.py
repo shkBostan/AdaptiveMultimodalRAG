@@ -48,7 +48,7 @@ class TestRAGModule:
     def test_prepare_context_with_documents(self, sample_documents):
         """Test prepare_context with Document objects."""
         try:
-            from data.document_loader import Document
+            from src.retrieval.document_loader import Document
             rag = RAGModule()
             
             context = rag.prepare_context(sample_documents)
@@ -246,7 +246,7 @@ class TestRAGModule:
     def test_normalize_documents(self, sample_documents):
         """Test _normalize_documents method."""
         try:
-            from data.document_loader import Document
+            from src.retrieval.document_loader import Document
             rag = RAGModule()
             
             normalized = rag._normalize_documents(sample_documents)

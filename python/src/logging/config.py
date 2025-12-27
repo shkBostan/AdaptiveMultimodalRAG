@@ -21,20 +21,35 @@ def setup_logging(config_path: str = None, env: str = None) -> None:
         env: Environment name (dev/prod/test)
     """
     if config_path is None:
-        # Default to logging_config.yaml in project root
-        config_path = Path(__file__).parent.parent / "logging_config.yaml"
+        # Default to logging_config.yaml in python directory
+        config_path = Path(__file__).parent.parent.parent / "logging_config.yaml"
     
     if env is None:
         env = os.getenv("ENV", "dev")
     
-    # Create logs directory if it doesn't exist
-    log_dir = Path("logs")
+    # Resolve config path
+    config_path = Path(config_path).resolve()
+    config_dir = config_path.parent
+    
+    # Create logs directory if it doesn't exist (relative to config file location)
+    log_dir = config_dir / "logs"
     log_dir.mkdir(exist_ok=True)
     
     # Load configuration
-    if os.path.exists(config_path):
+    if config_path.exists():
         with open(config_path, 'r') as f:
             config = yaml.safe_load(f)
+        
+        # Adjust log file paths to be absolute (relative to config file location)
+        for handler_name, handler_config in config.get('handlers', {}).items():
+            if isinstance(handler_config, dict) and 'filename' in handler_config:
+                # Convert relative paths to absolute paths relative to config directory
+                filename = handler_config['filename']
+                if not Path(filename).is_absolute():
+                    # If path starts with 'python/', remove it and use config_dir
+                    if filename.startswith('python/'):
+                        filename = filename.replace('python/', '', 1)
+                    handler_config['filename'] = str(config_dir / filename)
         
         # Adjust log levels based on environment
         if env == "prod":
@@ -56,7 +71,8 @@ def setup_logging(config_path: str = None, env: str = None) -> None:
         )
     
     # Add correlation ID filter to root logger
-    from python.utils.logging_formatter import CorrelationIDFilter
+    from .formatter import CorrelationIDFilter
+
     root_logger = logging.getLogger()
     for handler in root_logger.handlers:
         handler.addFilter(CorrelationIDFilter())

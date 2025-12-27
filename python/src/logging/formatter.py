@@ -12,6 +12,31 @@ from datetime import datetime
 from typing import Any, Dict, Optional
 
 
+class SafeFormatter(logging.Formatter):
+    """Formatter that safely handles missing attributes like correlationId."""
+    
+    def format(self, record: logging.LogRecord) -> str:
+        """Format log record, handling missing attributes gracefully."""
+        # Ensure correlation_id is set if not present
+        if not hasattr(record, 'correlation_id'):
+            # Try to get from context
+            try:
+                from .context import get_correlation_id
+                correlation_id = get_correlation_id()
+                if correlation_id:
+                    record.correlation_id = correlation_id
+            except Exception:
+                pass
+        
+        # Set correlationId (camelCase) for format string compatibility
+        if hasattr(record, 'correlation_id') and record.correlation_id:
+            record.correlationId = record.correlation_id
+        elif not hasattr(record, 'correlationId'):
+            record.correlationId = '-'
+        
+        return super().format(record)
+
+
 class JSONFormatter(logging.Formatter):
     """Custom JSON formatter for structured logging."""
     
@@ -61,7 +86,7 @@ class JSONFormatter(logging.Formatter):
                 'levelname', 'levelno', 'lineno', 'module', 'msecs',
                 'message', 'pathname', 'process', 'processName', 'relativeCreated',
                 'thread', 'threadName', 'exc_info', 'exc_text', 'stack_info',
-                'correlation_id', 'user_id', 'request_id'
+                'correlation_id', 'correlationId', 'user_id', 'request_id'
             ]:
                 log_data[key] = value
         
@@ -73,11 +98,10 @@ class CorrelationIDFilter(logging.Filter):
     
     def filter(self, record: logging.LogRecord) -> bool:
         """Add correlation ID from context if available."""
-        from python.utils.logging_context import get_correlation_id
+        from .context import get_correlation_id
         
         correlation_id = get_correlation_id()
         if correlation_id:
             record.correlation_id = correlation_id
         
         return True
-
