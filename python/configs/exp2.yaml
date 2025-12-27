@@ -1,0 +1,66 @@
+# Experiment 2 Configuration
+# Author: s Bostan
+# Created on: Nov, 2025
+
+experiment:
+  name: "exp2_multimodal_fusion"
+  description: "Multimodal fusion experiment with text, image, and audio"
+  version: "1.0.0"
+
+data:
+  dataset_path: "experiments/dataset2"
+  train_split: 0.8
+  val_split: 0.1
+  test_split: 0.1
+  modalities: ["text", "image", "audio"]
+
+embeddings:
+  text:
+    model_type: "bert"
+    model_name: "bert-base-uncased"
+  image:
+    model_type: "resnet"
+    model_name: "resnet50"
+  audio:
+    model_type: "wav2vec"
+    model_name: "facebook/wav2vec2-base"
+  fusion_strategy: "weighted_average"
+  fusion_weights:
+    text: 0.4
+    image: 0.3
+    audio: 0.3
+  batch_size: 16
+  max_length: 512
+
+retrieval:
+  method: "chromadb"
+  collection_name: "multimodal_collection"
+  similarity_metric: "cosine"
+  top_k: 10
+
+generation:
+  model_type: "multimodal_gpt"
+  max_length: 512
+  temperature: 0.7
+  top_p: 0.9
+
+evaluation:
+  metrics:
+    - "precision@k"
+    - "recall@k"
+    - "mrr"
+    - "ndcg"
+    - "bleu"
+    - "rouge"
+  k_values: [1, 5, 10]
+
+output:
+  results_dir: "experiments/results/exp2"
+  save_embeddings: true
+  save_index: true
+  save_generated_text: true
+
+logging:
+  level: "INFO"
+  log_file: "experiments/results/exp2/experiment.log"
+

@@ -15,15 +15,17 @@ disable_existing_loggers: false
 
 formatters:
   standard:
+    class: src.logging.formatter.SafeFormatter
     format: '%(asctime)s [%(levelname)s] %(name)s [%(correlationId)s] - %(message)s'
     datefmt: '%Y-%m-%d %H:%M:%S'
   
   detailed:
+    class: src.logging.formatter.SafeFormatter
     format: '%(asctime)s [%(levelname)s] %(name)s:%(lineno)d [%(correlationId)s] [%(threadName)s] - %(message)s'
     datefmt: '%Y-%m-%d %H:%M:%S'
   
   json:
-    class: python.utils.logging_formatter.JSONFormatter
+    class: src.logging.formatter.JSONFormatter
     format: '%(asctime)s %(levelname)s %(name)s %(message)s'
 
 handlers:

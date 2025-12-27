@@ -48,7 +48,7 @@ class TestRetrievalEngine:
     def test_load_documents(self, sample_documents):
         """Test loading documents."""
         try:
-            from data.document_loader import Document
+            from src.retrieval.document_loader import Document
             engine = RetrievalEngine(embedding_dim=128, use_index_builder=True)
             
             engine.load_documents(sample_documents)
@@ -60,7 +60,7 @@ class TestRetrievalEngine:
     def test_load_documents_without_index_builder(self, sample_documents):
         """Test loading documents without IndexBuilder mode."""
         try:
-            from data.document_loader import Document
+            from src.retrieval.document_loader import Document
             engine = RetrievalEngine(embedding_dim=128, use_index_builder=False)
             
             # Should still work but may not store in _document_objects
@@ -82,7 +82,7 @@ class TestRetrievalEngine:
     def test_build_index_with_embedding_fn(self, sample_documents):
         """Test building index with embedding function."""
         try:
-            from data.document_loader import Document
+            from src.retrieval.document_loader import Document
             engine = RetrievalEngine(embedding_dim=128, use_index_builder=True)
             engine.load_documents(sample_documents)
             
@@ -101,7 +101,7 @@ class TestRetrievalEngine:
     def test_build_index_with_embedding_fn_and_save(self, temp_dir, sample_documents):
         """Test building index with embedding function and saving."""
         try:
-            from data.document_loader import Document
+            from src.retrieval.document_loader import Document
             engine = RetrievalEngine(embedding_dim=128, use_index_builder=True)
             engine.load_documents(sample_documents)
             
@@ -171,7 +171,7 @@ class TestRetrievalEngine:
     def test_search_return_documents(self, sample_embeddings, sample_query_embedding):
         """Test search returning Document objects."""
         try:
-            from data.document_loader import Document
+            from src.retrieval.document_loader import Document
             engine = RetrievalEngine(embedding_dim=128, use_index_builder=True)
             
             docs = [
@@ -218,7 +218,7 @@ class TestRetrievalEngine:
     def test_add_documents_with_embedding_fn(self, sample_documents):
         """Test adding documents with embedding function."""
         try:
-            from data.document_loader import Document
+            from src.retrieval.document_loader import Document
             engine = RetrievalEngine(embedding_dim=128, use_index_builder=True)
             engine.load_documents(sample_documents)
             

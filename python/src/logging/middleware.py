@@ -12,11 +12,7 @@ from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.types import ASGIApp
 
-from python.utils.logging_context import (
-    initialize_context,
-    get_correlation_id,
-    clear_context
-)
+from .context import initialize_context, get_correlation_id, clear_context
 
 logger = logging.getLogger(__name__)
 

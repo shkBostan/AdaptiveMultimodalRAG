@@ -9,9 +9,11 @@ import logging
 import time
 from typing import Dict, Any
 
-from python.utils.logger import get_logger
-from python.utils.logging_context import initialize_context, get_correlation_id
-from python.utils.log_sanitizer import sanitize_api_key, sanitize_email
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from src.logging import get_logger, initialize_context, get_correlation_id, sanitize_api_key, sanitize_email
 
 logger = get_logger(__name__)
 
@@ -149,7 +151,7 @@ async def handle_api_request(request_id: str, user_id: str, query: str) -> Dict[
         raise
     
     finally:
-        from python.utils.logging_context import clear_context
+        from src.logging import clear_context
         clear_context()
 
 

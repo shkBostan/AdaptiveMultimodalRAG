@@ -1,0 +1,4 @@
+Embedding models convert text, images, and audio into numerical vectors that capture semantic meaning. BERT (Bidirectional Encoder Representations from Transformers) is a popular text embedding model that understands context by reading text in both directions.
+
+These embeddings enable similarity search, where documents with similar meanings are located near each other in the vector space. FAISS (Facebook AI Similarity Search) is a library optimized for efficient similarity search in large-scale vector databases.
+

@@ -1,0 +1,50 @@
+# Experiment 1 Configuration
+# Author: s Bostan
+# Created on: Nov, 2025
+
+experiment:
+  name: "exp1_baseline_retrieval"
+  description: "Baseline retrieval experiment with BERT embeddings"
+  version: "1.0.0"
+
+data:
+  dataset_path: "experiments/dataset1/text"
+  train_split: 0.8
+  val_split: 0.1
+  test_split: 0.1
+
+embeddings:
+  model_type: "bert"
+  model_name: "bert-base-uncased"
+  batch_size: 32
+  max_length: 512
+
+retrieval:
+  method: "faiss"
+  index_type: "flat"
+  similarity_metric: "cosine"
+  top_k: 10
+
+generation:
+  model_type: "gpt2"
+  max_length: 512
+  temperature: 0.7
+  top_p: 0.9
+
+evaluation:
+  metrics:
+    - "precision@k"
+    - "recall@k"
+    - "mrr"
+    - "ndcg"
+  k_values: [1, 5, 10]
+
+output:
+  results_dir: "experiments/results/exp1"
+  save_embeddings: true
+  save_index: true
+
+logging:
+  level: "INFO"
+  log_file: "experiments/results/exp1/experiment.log"
+

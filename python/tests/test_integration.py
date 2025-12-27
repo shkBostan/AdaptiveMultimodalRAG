@@ -29,9 +29,9 @@ class TestFullPipeline:
     def test_full_pipeline_mocked(self, mock_model_class, mock_tokenizer_class, mock_bert_class):
         """Test full pipeline with all components mocked."""
         try:
-            from data.document_loader import DocumentLoader, Document
-            from retrieval.retrieval_engine import RetrievalEngine
-            from generation.rag_module import RAGModule
+            from src.retrieval import DocumentLoader, Document
+            from src.retrieval import RetrievalEngine
+            from src.generation import RAGModule
             
             # Setup mock embedding model
             mock_embedding_model = Mock()

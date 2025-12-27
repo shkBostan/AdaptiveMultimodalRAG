@@ -52,7 +52,7 @@ mvnw.cmd
 .env.local
 setup.env
 
-# Data files
+# Data files (patterns for when data/ directory exists)
 data/text/*
 data/images/*
 data/audio/*
@@ -96,13 +96,9 @@ dist/
 build/
 out/
 
-# Tutorial documentation files
-docs/pythonToturialFile.md
-docs/javaToturialFile.md
-docs/uiToturialFile.md
+# Documentation files (local development and internal notes only)
+# Ignore all markdown files in docs/ directory recursively
+docs/**/*.md
 
-# DocumentLoader guidance and documentation
-data/DocumentLoader_Testing_Guide.md
-data/test_document_loader.py
-data/QUICK_REFERENCE.md
+# Note: Root-level README.md remains tracked
 

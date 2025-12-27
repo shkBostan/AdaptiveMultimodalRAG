@@ -13,18 +13,7 @@ from pathlib import Path
 from typing import List, Dict, Optional, Union
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-# Add project root to path for data imports
-project_root = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(project_root))
-
-# Import Document type (handle import gracefully for backward compatibility)
-try:
-    from data.document_loader import Document
-    DOCUMENT_AVAILABLE = True
-except ImportError:
-    DOCUMENT_AVAILABLE = False
-    # Create a placeholder type for type hints
-    Document = Dict  # type: ignore
+from ..retrieval.document_loader import Document
 
 
 class RAGModule:
@@ -166,7 +155,7 @@ class RAGModule:
         normalized = []
         
         for doc in retrieved_docs:
-            if DOCUMENT_AVAILABLE and hasattr(doc, 'to_dict'):
+            if hasattr(doc, 'to_dict'):
                 # Document object
                 normalized.append(doc.to_dict())
             elif isinstance(doc, dict):

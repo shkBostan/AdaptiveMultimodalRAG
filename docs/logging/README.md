@@ -29,7 +29,7 @@ logger.info("Processing request", kv("requestId", requestId));
 
 1. **Setup**: Initialize logging at application startup
 ```python
-from python.utils.logger import setup_logging, get_logger
+from src.logging import setup_logging, get_logger
 
 # Initialize logging
 setup_logging(env="dev")
@@ -41,7 +41,7 @@ logger.info("Application started")
 
 2. **FastAPI Integration**: Add middleware
 ```python
-from python.middleware.correlation_middleware import CorrelationIDMiddleware
+from src.logging import CorrelationIDMiddleware
 
 app.add_middleware(CorrelationIDMiddleware)
 ```

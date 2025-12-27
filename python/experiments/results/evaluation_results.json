@@ -1,0 +1,21 @@
+{
+  "retrieval": {
+    "total_documents_processed": 10,
+    "indexes_built": 2,
+    "avg_documents_per_experiment": 5.0
+  },
+  "generation": {
+    "generation_modules_initialized": 2,
+    "success_rate": 1.0
+  },
+  "summary": {
+    "total_experiments": 2,
+    "completed": 2,
+    "failed": 0,
+    "success_rate": 1.0
+  },
+  "embeddings": {
+    "total_embeddings_generated": 10,
+    "avg_embeddings_per_experiment": 5.0
+  }
+}

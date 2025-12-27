@@ -11,11 +11,11 @@ import pytest
 import sys
 from pathlib import Path
 
-# Add project root to path
-project_root = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(project_root))
+# Add python directory to path
+python_dir = Path(__file__).parent.parent
+sys.path.insert(0, str(python_dir))
 
-from data.document_loader import (
+from src.retrieval import (
     DocumentLoader, Document, TextNormalizer, BasicTextNormalizer, Chunker
 )
 from tests.fixtures import (

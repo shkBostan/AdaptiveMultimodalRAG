@@ -14,20 +14,20 @@ import os
 import time
 
 # Add python directory to path
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'python'))
+python_dir = os.path.join(os.path.dirname(__file__), '..', 'python')
+sys.path.insert(0, python_dir)
 
 # Initialize logging
-from python.utils.logger import setup_logging, get_logger
-from python.utils.logging_context import get_correlation_id
+from src.logging import setup_logging, get_logger, get_correlation_id
 
 env = os.getenv("ENV", "dev")
 setup_logging(env=env)
 logger = get_logger(__name__)
 
-from embeddings.bert_embedding import BERTEmbedding
-from retrieval.retrieval_engine import RetrievalEngine
-from generation.rag_module import RAGModule
-from python.middleware.correlation_middleware import CorrelationIDMiddleware
+from src.embeddings import BERTEmbedding
+from src.retrieval import RetrievalEngine
+from src.generation import RAGModule
+from src.logging import CorrelationIDMiddleware
 
 app = FastAPI(title="AdaptiveMultimodalRAG API", version="1.0.0")
 
