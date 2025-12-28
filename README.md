@@ -221,10 +221,7 @@ python evaluation/run_eval.py \
 **Windows (PowerShell):**
 ```powershell
 cd python
-python evaluation/run_eval.py `
-    --config configs/exp1.yaml `
-    --results experiments/results `
-    --output experiments/results/evaluation_results.json
+python evaluation/run_eval.py  --config configs/exp1.yaml  --results experiments/results   --output experiments/results/evaluation_results.json
 ```
 
 **Windows (Command Prompt):**
@@ -313,24 +310,7 @@ This prototype demonstrates the architecture and core concepts of a multimodal R
 - ⚠️ **Planned**: Production deployment configurations for decision systems
 - ⚠️ **Planned**: Performance optimization and benchmarking for real-time decision support
 
-## Documentation
 
-### Getting Started
-- [Environment Setup Guide](docs/setup.md) - Detailed Python environment setup instructions
-- [Quick Start (Persian)](docs/fa/QUICK_START.md) - راهنمای سریع شروع (فارسی)
-
-### Architecture & Structure
-- [Project Architecture](docs/architecture.md) - Complete architecture and refactoring history
-- [Python Package Structure](docs/python-structure.md) - Detailed Python package documentation
-- [Decision-Centric Design](docs/decision-centric.md) - Design principles for decision support systems
-
-### System Components
-- [Logging System](docs/logging/README.md) - Comprehensive logging system documentation
-- [Logging Architecture](docs/logging/ARCHITECTURE.md) - Detailed logging architecture
-
-### Persian Documentation (فارسی)
-- [راهنمای کامل پروژه](docs/fa/README.md) - Complete project guide in Persian
-- [راهنمای سریع شروع](docs/fa/QUICK_START.md) - Quick start guide in Persian
 
 ## Contributing
 
