@@ -1,17 +1,22 @@
 {
   "experiment": "exp1_baseline_retrieval",
   "status": "completed",
-  "embeddings": {
-    "status": "completed",
-    "documents_processed": 5
-  },
   "documents": {
     "count": 5,
     "status": "loaded"
   },
+  "embeddings": {
+    "status": "completed",
+    "documents_processed": 5,
+    "embedding_shape": [
+      5,
+      768
+    ]
+  },
   "retrieval": {
     "status": "completed",
-    "index_built": true
+    "index_built": true,
+    "index_size": 5
   },
   "generation": {
     "status": "completed"
