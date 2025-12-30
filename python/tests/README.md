@@ -1,155 +1,230 @@
-# AdaptiveMultimodalRAG Test Suite
+# Test Suite for AdaptiveMultimodalRAG
 
-Comprehensive pytest test suite for the AdaptiveMultimodalRAG system.
+This directory contains comprehensive pytest test suites for the AdaptiveMultimodalRAG project.
 
-## Test Structure
+## Overview
+
+The test suite is organized into modular test files, each testing specific components:
+
+- **`test_embeddings.py`**: Tests for embedding models (BERT, CLIP, MultimodalFusion)
+- **`test_rag_pipeline.py`**: Tests for RAG pipeline stages and full pipeline execution
+- **`conftest.py`**: Shared pytest fixtures for common test data and configurations
+
+## Structure
 
 ```
 tests/
-├── fixtures.py              # Shared fixtures and utilities
-├── conftest.py              # Pytest configuration
-├── test_document_loader.py  # DocumentLoader tests
-├── test_index_builder.py    # IndexBuilder tests
-├── test_retrieval_engine.py # RetrievalEngine tests
-├── test_rag_module.py       # RAGModule tests
-├── test_integration.py      # Full pipeline integration tests
-└── data/                    # Test data directory (README only)
+├── conftest.py              # Shared fixtures (configs, sample data, models)
+├── test_embeddings.py       # Embedding component tests
+├── test_rag_pipeline.py     # Pipeline stage and integration tests
+└── README.md                # This file
 ```
 
 ## Running Tests
 
-### Run all tests
+### Run All Tests
+
 ```bash
 cd python
-pytest
+pytest tests/
 ```
 
-### Run specific test file
+### Run Specific Test File
+
 ```bash
-pytest tests/test_document_loader.py
+# Test embeddings only
+pytest tests/test_embeddings.py
+
+# Test RAG pipeline only
+pytest tests/test_rag_pipeline.py
 ```
 
-### Run specific test class
+### Run Specific Test Function
+
 ```bash
-pytest tests/test_document_loader.py::TestDocumentLoader
+# Test BERT embedding initialization
+pytest tests/test_embeddings.py::test_bert_embedding_initialization
+
+# Test full RAG pipeline
+pytest tests/test_rag_pipeline.py::test_full_rag_pipeline
 ```
 
-### Run specific test method
+### Run with Verbose Output
+
 ```bash
-pytest tests/test_document_loader.py::TestDocumentLoader::test_load_from_txt_file
+pytest tests/ -v
 ```
 
-### Run with verbose output
+### Run with Logging Output
+
 ```bash
-pytest -v
+pytest tests/ -v -s
 ```
 
-### Run with coverage (if pytest-cov installed)
+### Run Only Smoke Tests
+
 ```bash
-pytest --cov=python --cov-report=html
+pytest tests/ -m smoke
 ```
 
-## Test Categories
+## Test Coverage
 
-### 1. DocumentLoader Tests (`test_document_loader.py`)
-- TXT file loading
-- JSON file loading (list and dict formats)
-- CSV file loading
-- Mixed file type loading
-- Text normalization
-- Character and token-based chunking
-- Document conversion and metadata handling
+### Embedding Tests (`test_embeddings.py`)
 
-### 2. IndexBuilder Tests (`test_index_builder.py`)
-- Index initialization (flat_l2, ivf_flat)
-- Embedding shape validation
-- Index building with different types
-- Search functionality
-- Save/load operations
-- Incremental updates (add_embeddings)
-- Utility function validation
+#### BERT Embedding Tests
+- ✅ Initialization with default and custom parameters
+- ✅ Single text embedding generation
+- ✅ Batch text embedding generation
+- ✅ Different pooling strategies (CLS, MEAN, MAX)
+- ✅ L2 normalization option
 
-### 3. RetrievalEngine Tests (`test_retrieval_engine.py`)
-- Legacy mode initialization
-- IndexBuilder mode initialization
-- Document loading
-- Index building (legacy and new modes)
-- Search with different return formats
-- Incremental document addition
-- Statistics retrieval
+#### CLIP Image Embedding Tests
+- ✅ Initialization
+- ✅ Embedding from image file path
+- ✅ Embedding from PIL Image object
+- ✅ Batch image embedding generation
+- ✅ L2 normalization option
 
-### 4. RAGModule Tests (`test_rag_module.py`)
-- Module initialization
-- Context preparation with different formats
-- Metadata marker formatting
-- Length control and truncation
-- Generation with mocked models
-- Empty context fallback
-- Answer extraction
+#### Multimodal Fusion Tests
+- ✅ Initialization with different strategies (concatenation, weighted_sum, attention)
+- ✅ Concatenation fusion
+- ✅ Weighted sum fusion
+- ✅ Attention fusion
+- ✅ Batch fusion
+- ✅ Error handling (mismatched dimensions, empty inputs)
 
-### 5. Integration Tests (`test_integration.py`)
-- Full pipeline: load → embed → index → retrieve → generate
-- Pipeline with mocked components
-- Pipeline with synthetic data
-- Persistence integration
-- Error handling
-- Consistency checks
+### RAG Pipeline Tests (`test_rag_pipeline.py`)
 
-## Test Features
+#### Embedding Pipeline Stage Tests
+- ✅ `run_embedding_pipeline` for BERT model initialization
+- ✅ `run_embedding_pipeline` for multimodal fusion initialization
+- ✅ `run_full_embedding_pipeline` for BERT embeddings generation
+- ✅ Batch processing with `run_full_embedding_pipeline`
 
-- **No External Dependencies**: All tests use mocks to avoid downloading models
-- **Fast Execution**: All tests run in under 2 seconds
-- **Comprehensive Coverage**: Tests cover all major components and edge cases
-- **Synthetic Data**: Test data is generated on-the-fly using fixtures
-- **Isolated Tests**: Each test is independent and can run in any order
+#### Retrieval Pipeline Stage Tests
+- ✅ `run_retrieval_pipeline` for retrieval engine initialization
+- ✅ Index building and search functionality
 
-## Fixtures
+#### Generation Pipeline Stage Tests
+- ✅ `run_generation_pipeline` for RAG module initialization
+- ✅ RAG module text generation with retrieved context
 
-Key fixtures available in `fixtures.py`:
+#### Full Pipeline Integration Tests
+- ✅ Full RAG pipeline execution (smoke test)
+- ✅ Full pipeline with retrieval and generation
+- ✅ Error handling for empty documents
+- ✅ Output shape validation
 
-- `temp_dir`: Temporary directory for test files
-- `sample_text_files`: Sample TXT files
-- `sample_json_file_list`: JSON file with list format
-- `sample_json_file_dict`: JSON file with dict format
-- `sample_csv_file`: Sample CSV file
-- `sample_embeddings`: Synthetic embedding array
-- `sample_query_embedding`: Synthetic query embedding
-- `sample_documents`: Sample Document objects
-- `mock_embedding_model`: Mock embedding model
-- `mock_faiss_index`: Mock FAISS index
-- `mock_rag_model`: Mock RAG generation model
+## Test Fixtures (`conftest.py`)
+
+The `conftest.py` file provides reusable fixtures for all tests:
+
+### Data Fixtures
+- `sample_texts`: Sample text strings for embedding tests
+- `sample_documents`: Sample Document objects for pipeline tests
+- `sample_documents_with_images`: Documents with image paths
+- `dummy_image_path`: Dummy image file path
+- `dummy_pil_image`: PIL Image object
+
+### Configuration Fixtures
+- `bert_config`: BERT embedding configuration
+- `clip_config`: CLIP embedding configuration
+- `multimodal_config`: Multimodal fusion configuration
+- `full_rag_config`: Full RAG pipeline configuration
+
+### Model Fixtures
+- `bert_embedding_model`: Initialized BERT embedding model with loaded weights
+
+### Embedding Fixtures
+- `sample_embeddings_text`: Sample text embeddings (768-dim)
+- `sample_embeddings_image`: Sample image embeddings (512-dim)
+- `sample_embeddings_dict`: Dictionary of embeddings for fusion tests
+- `sample_embeddings_dict_batch`: Dictionary of batch embeddings
+
+### Utility Fixtures
+- `logger`: Configured logger for tests
+
+## Writing New Tests
+
+### Adding a New Test Function
+
+1. Import necessary modules:
+```python
+import pytest
+from src.embeddings import BERTEmbedding
+```
+
+2. Use fixtures from `conftest.py`:
+```python
+def test_my_feature(logger, sample_documents):
+    # Your test code
+    pass
+```
+
+3. Add assertions and logging:
+```python
+def test_my_feature(logger, sample_documents):
+    logger.info("Testing my feature...")
+    
+    # Test code
+    result = some_function()
+    
+    # Assertions
+    assert result is not None
+    assert result.shape == expected_shape
+    
+    logger.info("✓ Test passed")
+```
+
+### Best Practices
+
+1. **Use fixtures**: Reuse fixtures from `conftest.py` rather than creating test data inline
+2. **Add logging**: Include informative log messages to trace test execution
+3. **Test independently**: Each test should be able to run independently
+4. **Validate outputs**: Check shapes, types, and values of outputs
+5. **Test edge cases**: Include error handling and edge case tests
+6. **Keep tests fast**: Use minimal data and lightweight models
 
 ## Requirements
 
-- pytest
-- numpy
-- unittest.mock (standard library)
+Tests require the following dependencies (should be in `requirements.txt`):
+
+- `pytest`: Test framework
+- `pytest-mock`: Mocking support (optional)
+- `numpy`: Numerical operations
+- `Pillow`: Image processing (for CLIP tests)
+- `torch`: PyTorch (for model loading)
+- `transformers`: HuggingFace transformers (for models)
+- `faiss-cpu` or `faiss-gpu`: Vector search (for retrieval tests)
 
 ## Notes
 
-- Tests use `unittest.mock` to avoid external API calls
-- Synthetic embeddings use fixed random seed for reproducibility
-- All file I/O uses temporary directories that are cleaned up automatically
-- Tests are designed to run quickly without network access
+- Tests use lightweight models (bert-base-uncased, clip-vit-base-patch32, gpt2) to keep execution fast
+- Models are downloaded on first use (requires internet connection)
+- Tests create temporary files and clean them up automatically
+- The smoke test (`@pytest.mark.smoke`) can be run quickly to verify basic functionality
 
 ## Troubleshooting
 
 ### Import Errors
-If you see import errors, ensure you're running tests from the `python/` directory:
-```bash
-cd python
-pytest
-```
+- Ensure you're in the `python/` directory when running tests
+- Check that all dependencies are installed: `pip install -r requirements.txt`
 
-### Missing Dependencies
-Install required packages:
-```bash
-pip install pytest numpy
-```
+### Model Download Issues
+- Ensure internet connection for first-time model downloads
+- Models are cached after first download
+
+### Memory Issues
+- Reduce `batch_size` in test configurations if running out of memory
+- Use smaller models or fewer test documents
 
 ### Test Failures
-Run with verbose output to see detailed error messages:
-```bash
-pytest -v -s
-```
+- Run tests with `-v -s` flags to see detailed output
+- Check that all required dependencies are installed
+- Verify that test data files exist (if any)
+
+## Author
+
+**Author**: s Bostan  
+**Created on**: Dec, 2025
 
