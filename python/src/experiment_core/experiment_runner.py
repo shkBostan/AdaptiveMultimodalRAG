@@ -85,7 +85,7 @@ def _load_documents(config: Dict[str, Any], logger: logging.Logger) -> list:
         List of Document objects
     """
     data_config = config.get('data', {})
-    dataset_path = data_config.get('dataset_path', 'experiments/dataset1')
+    dataset_path = data_config.get('dataset_path', 'experiments/datasets/text')
     
     logger.info(f"Loading documents from: {dataset_path}")
     loader = DocumentLoader()
