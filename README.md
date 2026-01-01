@@ -134,10 +134,15 @@ AdaptiveMultimodalRAG/
 │   ├── evaluation/             # Evaluation framework
 │   │   ├── metrics/            # Retrieval and generation metrics
 │   │   └── run_eval.py         # Evaluation runner
-│   ├── experiments/            # Experiment data and results
-│   │   ├── dataset1/           # Dataset 1 experiments
-│   │   ├── dataset2/           # Dataset 2 experiments
-│   │   └── results/            # Experiment results
+│   ├── experiments/            # Benchmark- and paper-specific experimental setups
+│   │   ├── datasets/           # Research benchmark datasets
+│   │   │   ├── mscoco/         # MS COCO 2017 dataset (multimodal)
+│   │   │   ├── flickr30k/      # Flickr30k dataset (image-text)
+│   │   │   ├── docvqa/         # DocVQA dataset (document understanding)
+│   │   │   └── text/           # Text dataset samples
+│   │   ├── metrics/            # Evaluation metrics and scoring functions
+│   │   ├── runners/            # Experiment execution scripts
+│   │   └── results/            # Experiment results and outputs
 │   ├── configs/                # Experiment configurations (YAML)
 │   ├── scripts/                # Utility scripts
 │   │   └── run_pipeline.py     # Main pipeline runner

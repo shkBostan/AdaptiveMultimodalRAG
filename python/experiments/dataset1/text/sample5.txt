@@ -1,4 +1,0 @@
-Decision-centric systems require high reliability and traceability. Structured logging with correlation IDs enables tracking of decision processes from query to final response. This audit trail is crucial for understanding how decisions were made and for debugging issues in production environments.
-
-The AdaptiveMultimodalRAG system is designed specifically for such applications, providing evidence-based responses with full traceability through comprehensive logging and evaluation frameworks.
-

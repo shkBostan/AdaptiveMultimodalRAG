@@ -100,5 +100,16 @@ out/
 # Ignore all markdown files in docs/ directory recursively
 docs/**/*.md
 
-# Note: Root-level README.md remains tracked
+
+# Datasets (raw & processed)
+experiments/datasets/**/raw/
+experiments/datasets/**/processed/
+
+python/experiments/datasets/**
+!python/experiments/datasets/**/README.md
+
+# COCO temporary files
+*.zip
+*.tar
+*.tar.gz
 
