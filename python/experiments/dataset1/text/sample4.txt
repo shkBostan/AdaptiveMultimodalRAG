@@ -1,4 +1,0 @@
-Evaluation metrics are essential for assessing the quality of retrieval and generation systems. Precision@K measures the proportion of relevant documents among the top K retrieved results. Recall@K indicates how many relevant documents were found in the top K results.
-
-For generation quality, BLEU score measures n-gram overlap between generated and reference text, while ROUGE focuses on recall-oriented evaluation. These metrics help ensure that decision support systems provide reliable and accurate information.
-
