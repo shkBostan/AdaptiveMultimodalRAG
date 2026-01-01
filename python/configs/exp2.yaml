@@ -8,7 +8,7 @@ experiment:
   version: "1.0.0"
 
 data:
-  dataset_path: "experiments/dataset2"
+  dataset_path: "experiments/datasets/text"
   train_split: 0.8
   val_split: 0.1
   test_split: 0.1
