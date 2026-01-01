@@ -74,7 +74,7 @@ config = {
 
 # Load documents and run pipeline
 loader = DocumentLoader()
-documents = loader.load_from_directory('experiments/dataset1/text')
+documents = loader.load_from_directory('experiments/datasets/text')
 embedding_model, retrieval_engine, rag_module, embeddings = execute_full_rag_pipeline(
     config, documents, logger
 )
