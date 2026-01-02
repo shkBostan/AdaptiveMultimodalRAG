@@ -22,8 +22,8 @@ raw/
 │ ├── train2017/
 │ └── val2017/
 └── annotations/
-├── captions_train2017.json
-└── captions_val2017.json
+  ├── captions_train2017.json
+  └── captions_val2017.json
 
 processed/
 ├── documents.jsonl
