@@ -113,3 +113,25 @@ python/experiments/datasets/**
 *.tar
 *.tar.gz
 
+#paper directory structure
+# Ignore LaTeX build artifacts
+paper/**/*.aux
+paper/**/*.log
+paper/**/*.out
+paper/**/*.toc
+paper/**/*.bbl
+paper/**/*.blg
+paper/**/*.pdf
+
+# Ignore draft content (private)
+paper/draft/*.tex
+paper/draft/sections/*.tex
+paper/draft/references.bib
+paper/figures/*
+
+# Allow structure & meta files
+!paper/
+!paper/notes.md
+!paper/draft/
+!paper/draft/main.tex
+!paper/draft/sections/

@@ -1,0 +1,79 @@
+\documentclass[11pt,a4paper]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{subcaption}
+\usepackage{natbib}
+\usepackage{geometry}
+
+% Page geometry
+\geometry{margin=1in}
+
+% Hyperref settings
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue,
+    pdftitle={AdaptiveMultimodalRAG: A Framework for Multimodal Retrieval-Augmented Generation},
+    pdfauthor={s Bostan}
+}
+
+% Theorem environments
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+% Title information
+\title{AdaptiveMultimodalRAG: A Framework for Multimodal Retrieval-Augmented Generation}
+\author{s Bostan}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+% TODO: Write abstract (150-250 words)
+% Key points to cover:
+% - Problem: limitations of text-only RAG for multimodal content
+% - Approach: adaptive multimodal fusion strategies
+% - Contributions: framework, experiments, results
+% - Impact: improved retrieval and generation quality
+\end{abstract}
+
+% Keywords (uncomment and modify based on target journal requirements)
+% \begin{keywords}
+% Retrieval-Augmented Generation, Multimodal Learning, Information Retrieval, 
+% Embeddings, Document Understanding
+% \end{keywords}
+
+% Main content
+\input{sections/introduction}
+\input{sections/related_work}
+\input{sections/methodology}
+\input{sections/dataset}
+\input{sections/experiments}
+\input{sections/discussion}
+\input{sections/conclusion}
+
+% References
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}
+
