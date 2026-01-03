@@ -127,43 +127,64 @@ For detailed environment setup instructions, see [Environment Setup Guide](docs/
 AdaptiveMultimodalRAG/
 ├── python/                      # Python implementation
 │   ├── src/                    # Core source code modules
-│   │   ├── embeddings/         # Embedding models (BERT, Word2Vec, multimodal fusion)
+│   │   ├── data/               # Dataset handling modules
+│   │   ├── embeddings/         # Embedding models (BERT, CLIP, Word2Vec, fusion)
+│   │   ├── experiment_core/    # Experiment orchestration
 │   │   ├── generation/         # RAG generation module
-│   │   ├── retrieval/          # Retrieval engine and search utilities
-│   │   └── utils/              # Utilities (preprocessing, evaluation, logging)
+│   │   ├── logging/            # Logging infrastructure
+│   │   ├── pipeline/           # Pipeline orchestration
+│   │   ├── retrieval/          # Retrieval engine and utilities
+│   │   └── utils/              # Utility functions
 │   ├── evaluation/             # Evaluation framework
-│   │   ├── metrics/            # Retrieval and generation metrics
-│   │   └── run_eval.py         # Evaluation runner
-│   ├── experiments/            # Benchmark- and paper-specific experimental setups
-│   │   ├── datasets/           # Research benchmark datasets
-│   │   │   ├── mscoco/         # MS COCO 2017 dataset (multimodal)
-│   │   │   ├── flickr30k/      # Flickr30k dataset (image-text)
-│   │   │   ├── docvqa/         # DocVQA dataset (document understanding)
-│   │   │   └── text/           # Text dataset samples
-│   │   ├── metrics/            # Evaluation metrics and scoring functions
-│   │   ├── runners/            # Experiment execution scripts
-│   │   └── results/            # Experiment results and outputs
+│   │   └── metrics/            # Evaluation metrics
+│   ├── experiments/            # Benchmark- and paper-specific setups
+│   │   ├── datasets/           # Research benchmark datasets (mscoco, flickr30k, docvqa, text)
+│   │   ├── metrics/            # Additional evaluation metrics
+│   │   ├── preprocessing/      # Dataset preprocessing scripts
+│   │   ├── results/            # Experiment results
+│   │   └── runners/            # Experiment execution scripts
+│   ├── examples/               # Usage examples
+│   ├── storage/                # Storage and persistence
+│   ├── tests/                  # Test suite
+│   │   ├── data/               # Test data fixtures
+│   │   └── preprocessing/      # Preprocessing pipeline tests
+│   ├── notebooks/              # Jupyter notebooks
 │   ├── configs/                # Experiment configurations (YAML)
 │   ├── scripts/                # Utility scripts
-│   │   └── run_pipeline.py     # Main pipeline runner
-│   ├── notebooks/              # Jupyter notebooks for experimentation
-│   ├── tests/                  # Test suite
-│   ├── middleware/             # FastAPI middleware (correlation IDs)
-│   └── storage/                # Storage and persistence
+│   └── logs/                   # Log files directory
 ├── java/                       # Java implementation
-│   └── src/main/java/com/adaptiveRAG/
-│       ├── embeddings/         # Java embedding classes
-│       ├── retrieval/          # Retrieval engine
-│       ├── generation/         # RAG module
-│       └── utils/               # Utilities and logging
+│   └── src/
+│       ├── main/java/com/adaptiveRAG/
+│       │   ├── embeddings/     # Java embedding classes
+│       │   ├── examples/       # Usage examples
+│       │   ├── filter/         # Servlet filters
+│       │   ├── generation/     # RAG module
+│       │   ├── retrieval/      # Retrieval engine
+│       │   └── utils/          # Utilities and logging
+│       └── test/java/          # Java tests
 ├── demo_api/                   # FastAPI demo application
 ├── ui/web/                     # React frontend application
+│   └── src/
+│       ├── api/                # API client
+│       ├── components/         # React components
+│       ├── hooks/              # React hooks
+│       ├── pages/              # Page components
+│       └── utils/              # Utility functions
 ├── config/                     # Environment configurations
 ├── scripts/                    # Setup and utility scripts
-├── docs/                       # Documentation (including logging system)
-├── requirements.txt            # Python dependencies
-├── ENVIRONMENT_SETUP.md        # Environment setup guide
-└── logs/                       # Log files directory
+├── ci/                         # CI/CD configuration
+├── docs/                       # Documentation
+│   └── logging/                # Logging system documentation
+├── paper/                      # Research paper materials
+│   ├── draft/                  # LaTeX draft
+│   └── figures/                # Paper figures
+├── target/                     # Java build output (Maven)
+├── venv/                       # Python virtual environment (git-ignored)
+├── Dockerfile
+├── pom.xml
+├── requirements.txt
+├── PREPROCESSING_AND_NEXT_STEPS_ANALYSIS.md
+└── LICENSE
 ```
 
 For detailed Python package structure, see [Python Package Structure](docs/python-structure.md).
