@@ -15,6 +15,8 @@ from pathlib import Path
 import logging
 from PIL import Image
 import io
+import json
+from datetime import datetime
 
 from src.retrieval import Document
 from src.data.mscoco_dataset import MSCOCODataset
@@ -365,3 +367,117 @@ def mscoco_dataset(mscoco_root, logger):
     )
     logger.info(f"✓ MSCOCODataset loaded ({len(dataset)} samples)")
     return dataset
+
+# ============================================================================
+# PREPROCESSING FIXTURES
+# ============================================================================
+
+@pytest.fixture
+def sample_documents_jsonl(tmp_path, dummy_image_path):
+    """
+    Create a valid JSONL file with 3-5 multimodal documents for preprocessing tests.
+
+    Research intent: Verify preprocessing pipeline correctly handles valid multimodal
+    documents with proper schema, ensuring reproducibility and data integrity.
+    """
+    documents = [
+        {
+            "id": "mscoco_train_000000000001_0",
+            "content": "A person riding a bicycle on a city street",
+            "image_path": dummy_image_path,
+            "metadata": {
+                "split": "train",
+                "image_id": 1,
+                "caption_id": 0,
+                "coco_file": "captions_train.json",
+                "preprocessing_version": "1.0.0",
+                "preprocessed_at": datetime.utcnow().isoformat() + "Z"
+            }
+        },
+        {
+            "id": "mscoco_train_000000000002_0",
+            "content": "A dog playing in a park with children",
+            "image_path": dummy_image_path,
+            "metadata": {
+                "split": "train",
+                "image_id": 2,
+                "caption_id": 1,
+                "coco_file": "captions_train.json",
+                "preprocessing_version": "1.0.0",
+                "preprocessed_at": datetime.utcnow().isoformat() + "Z"
+            }
+        },
+        {
+            "id": "mscoco_val_000000000003_0",
+            "content": "A red car parked on the side of the road",
+            "image_path": dummy_image_path,
+            "metadata": {
+                "split": "val",
+                "image_id": 3,
+                "caption_id": 2,
+                "coco_file": "captions_val.json",
+                "preprocessing_version": "1.0.0",
+                "preprocessed_at": datetime.utcnow().isoformat() + "Z"
+            }
+        }
+    ]
+    
+    jsonl_path = tmp_path / "documents.jsonl"
+    with open(jsonl_path, 'w', encoding='utf-8') as f:
+        for doc in documents:
+            f.write(json.dumps(doc, ensure_ascii=False) + '\n')
+    
+    return jsonl_path
+
+
+@pytest.fixture
+def invalid_documents_jsonl(tmp_path):
+    """
+    Create a JSONL file with invalid documents for validation tests.
+
+    Research intent: Ensure preprocessing validation correctly identifies data quality
+    issues (missing fields, invalid paths, empty content) to prevent downstream errors.
+    """
+    invalid_documents = [
+        {
+            "id": "invalid_1",
+            # Missing content field
+            "image_path": str(tmp_path / "nonexistent.jpg"),
+            "metadata": {"split": "train"}
+        },
+        {
+            "id": "invalid_2",
+            "content": "",  # Empty content
+            "image_path": str(tmp_path / "nonexistent.jpg"),
+            "metadata": {"split": "train"}
+        },
+        {
+            "id": "invalid_3",
+            "content": "Valid caption text",
+            "image_path": str(tmp_path / "nonexistent.jpg"),  # Missing image
+            "metadata": {}  # Missing required metadata fields
+        }
+    ]
+    
+    jsonl_path = tmp_path / "invalid_documents.jsonl"
+    with open(jsonl_path, 'w', encoding='utf-8') as f:
+        for doc in invalid_documents:
+            f.write(json.dumps(doc, ensure_ascii=False) + '\n')
+    
+    return jsonl_path
+
+
+@pytest.fixture
+def sample_split_config():
+    """
+    Return deterministic split ratios for reproducibility testing.
+
+    Research intent: Ensure split generation produces consistent, reproducible results
+    with no data leakage, critical for research reproducibility and peer review.
+    """
+    return {
+        "train_ratio": 0.7,
+        "val_ratio": 0.2,
+        "test_ratio": 0.1,
+        "seed": 42
+    }
