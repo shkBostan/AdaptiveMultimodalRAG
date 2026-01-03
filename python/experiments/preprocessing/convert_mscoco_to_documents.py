@@ -96,27 +96,41 @@ def create_document_id(split: str, image_id: int, caption_id: int) -> str:
     return f"mscoco_{split}_{image_id:012d}_{caption_id}"
 
 
-def validate_image_path(image_path: Path) -> bool:
+def validate_image_path(
+    image_path: Path | str,
+    doc_id: Optional[str] = None
+) -> Dict[str, Any]:
     """
-    Validate that image file exists and is readable.
-    
-    Args:
-        image_path: Path to image file
-        
-    Returns:
-        True if image exists and is readable, False otherwise
+    Validate image path existence and readability.
+
+    Returns structured validation report.
     """
+    image_path = Path(image_path)
+
+    result = {
+        "valid": False,
+        "exists": False,
+        "readable": False,
+        "doc_id": doc_id,
+        "path": str(image_path)
+    }
+
     if not image_path.exists():
-        return False
-    
+        return result
+
+    result["exists"] = True
+
     try:
-        # Try to verify it's a valid image file
         from PIL import Image
         with Image.open(image_path) as img:
             img.verify()
-        return True
+        result["readable"] = True
+        result["valid"] = True
     except Exception:
-        return False
+        result["readable"] = False
+
+    return result
+
 
 
 def create_document(
@@ -164,10 +178,12 @@ def create_document(
     
     image_path = image_dir / file_name
     
-    # Validate image exists
-    if not validate_image_path(image_path):
+    validation = validate_image_path(image_path, doc_id=None)
+
+    if not validation["valid"]:
         logger.warning(f"Image not found or invalid: {image_path}")
         return None
+
     
     # Create document ID
     doc_id = create_document_id(split, image_id, caption_id)
